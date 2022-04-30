@@ -1,6 +1,7 @@
 package migrate
 
 import (
+	"errors"
 	"fmt"
 	"io/fs"
 
@@ -20,6 +21,10 @@ func Run(dburl string, migrations fs.FS) error {
 		fs: migrations,
 	}
 
+	if err := e.Initialize(); err != nil {
+		return err
+	}
+
 	ms, err := e.Pending()
 	if err != nil {
 		return err
@@ -30,7 +35,7 @@ func Run(dburl string, migrations fs.FS) error {
 
 		if err := e.Migrate(m); err != nil {
 			fmt.Printf("%s\n", err)
-			return err
+			return errors.New("migration failed")
 		} else {
 			fmt.Println("OK")
 		}

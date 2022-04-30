@@ -40,9 +40,12 @@ func run() error {
 }
 ```
 
-Add this target to your `Makefile`:
+Add these targets to your `Makefile`:
 
 ```makefile
+migrate:
+        go run ./cmd/migrate
+
 migration:
         $(if $(name),,$(error name is not set))
         touch cmd/migrate/migrations/$(shell date +%Y%m%d%H%M%S)_$(name).sql
@@ -59,7 +62,7 @@ $ make migration name=create_users
 ### Run migrations locally
 
 ```
-$ go run cmd/migrate/main.go
+$ make migrate
 ```
 
 ### Use in production
