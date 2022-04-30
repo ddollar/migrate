@@ -39,7 +39,7 @@ func (cc *CLI) up(_ *stdcli.Context) error {
 	for _, v := range pending {
 		fmt.Printf("%s: ", v)
 
-		if err := cc.engine.MigrationUp(v); err != nil {
+		if err := cc.engine.Migrate(v); err != nil {
 			fmt.Printf("%s\n", err)
 		} else {
 			fmt.Println("OK")

@@ -9,8 +9,7 @@ import (
 
 type Migration struct {
 	Version string
-	Down    []byte
-	Up      []byte
+	Body    []byte
 }
 
 type Migrations []Migration
@@ -22,33 +21,20 @@ func LoadMigrations(e *Engine) (Migrations, error) {
 		if d.IsDir() {
 			return nil
 		}
-		parts := strings.SplitN(d.Name(), ".", 3)
+		parts := strings.SplitN(d.Name(), ".", 2)
 		if len(parts) != 3 {
 			return fmt.Errorf("invalid migration: %s", d.Name())
 		}
 		mm := raw[parts[0]]
-		switch parts[1] {
-		case "up":
-			mm.Up, _ = fs.ReadFile(e.fs, path)
-		case "down":
-			mm.Down, _ = fs.ReadFile(e.fs, path)
-		default:
-			return fmt.Errorf("invalid migration: %s", d.Name())
+		mm.Body, err = fs.ReadFile(e.fs, path)
+		if err != nil {
+			return err
 		}
 		raw[parts[0]] = mm
 		return nil
 	})
 	if err != nil {
 		return nil, err
-	}
-
-	for k, m := range raw {
-		if m.Up == nil {
-			return nil, fmt.Errorf("missing migration file: %s.up.sql", k)
-		}
-		if m.Down == nil {
-			return nil, fmt.Errorf("missing migration file: %s.down.sql", k)
-		}
 	}
 
 	ms := Migrations{}

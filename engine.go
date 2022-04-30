@@ -38,7 +38,7 @@ func (e *Engine) Initialize() error {
 	return nil
 }
 
-func (e *Engine) MigrationUp(version string) error {
+func (e *Engine) Migrate(version string) error {
 	m, ok := e.migrations.Find(version)
 	if !ok {
 		return fmt.Errorf("no such migration: %s", version)
@@ -49,7 +49,7 @@ func (e *Engine) MigrationUp(version string) error {
 			return err
 		}
 
-		if _, err := tx.Exec(string(m.Up)); err != nil {
+		if _, err := tx.Exec(string(m.Body)); err != nil {
 			return err
 		}
 
