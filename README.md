@@ -43,6 +43,8 @@ func run() error {
 Add this target to your `Makefile`:
 
 ```makefile
+date = $(shell date +%Y%m%d%H%M%S)
+
 migration:
         $(if $(name),,$(error name is not set))
         touch cmd/migrate/migrations/$(date)_$(name).up.sql
