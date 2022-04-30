@@ -22,7 +22,7 @@ func LoadMigrations(e *Engine) (Migrations, error) {
 			return nil
 		}
 		parts := strings.SplitN(d.Name(), ".", 2)
-		if len(parts) != 3 {
+		if len(parts) != 2 {
 			return fmt.Errorf("invalid migration: %s", d.Name())
 		}
 		mm := raw[parts[0]]
