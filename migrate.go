@@ -1,16 +1,16 @@
 package migrate
 
 import (
+	"fmt"
 	"io/fs"
 
-	"github.com/ddollar/stdcli"
 	"github.com/go-pg/pg/v10"
 )
 
-func New(dburl string, migrations fs.FS) (*CLI, error) {
+func Run(dburl string, migrations fs.FS) error {
 	opts, err := pg.ParseURL(dburl)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	db := pg.Connect(opts)
@@ -20,12 +20,21 @@ func New(dburl string, migrations fs.FS) (*CLI, error) {
 		fs: migrations,
 	}
 
-	c := &CLI{
-		cli:    stdcli.New("migrate", ""),
-		engine: e,
+	ms, err := e.Pending()
+	if err != nil {
+		return err
 	}
 
-	c.Register()
+	for _, m := range ms {
+		fmt.Printf("%s: ", m)
 
-	return c, nil
+		if err := e.Migrate(m); err != nil {
+			fmt.Printf("%s\n", err)
+			return err
+		} else {
+			fmt.Println("OK")
+		}
+	}
+
+	return nil
 }
