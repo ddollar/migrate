@@ -2,7 +2,7 @@ module github.com/ddollar/migrate
 
 go 1.18
 
-require github.com/go-pg/pg/v10 v10.10.6
+require github.com/go-pg/pg/v10 v10.11.0
 
 require (
 	github.com/go-pg/zerochecker v0.2.0 // indirect
@@ -14,5 +14,5 @@ require (
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/sys v0.0.0-20210923061019-b8560ed6a9b7 // indirect
-	mellium.im/sasl v0.2.1 // indirect
+	mellium.im/sasl v0.3.1 // indirect
 )
