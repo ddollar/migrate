@@ -8,7 +8,14 @@ import (
 	"github.com/go-pg/pg/v10"
 )
 
-func Run(db *pg.DB, migrations fs.FS) error {
+func Run(dburl string, migrations fs.FS) error {
+	opts, err := pg.ParseURL(dburl)
+	if err != nil {
+		return err
+	}
+
+	db := pg.Connect(opts)
+
 	e := &Engine{
 		db: db,
 		fs: migrations,
