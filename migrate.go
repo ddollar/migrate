@@ -5,17 +5,10 @@ import (
 	"fmt"
 	"io/fs"
 
-	"github.com/go-pg/pg/v10"
+	"github.com/go-pg/pg/v10/orm"
 )
 
-func Run(dburl string, migrations fs.FS) error {
-	opts, err := pg.ParseURL(dburl)
-	if err != nil {
-		return err
-	}
-
-	db := pg.Connect(opts)
-
+func Run(db orm.DB, migrations fs.FS) error {
 	e := &Engine{
 		db: db,
 		fs: migrations,
