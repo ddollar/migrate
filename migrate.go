@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"io/fs"
 
-	"github.com/go-pg/pg/v10/orm"
+	"github.com/go-pg/pg/v10"
 )
 
-func Run(db orm.DB, migrations fs.FS) error {
+func Run(db *pg.DB, migrations fs.FS) error {
 	e := &Engine{
 		db: db,
 		fs: migrations,
