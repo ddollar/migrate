@@ -11,6 +11,7 @@ import (
 
 type Options struct {
 	Dir    string
+	DryRun bool
 	Schema string
 }
 
@@ -30,9 +31,10 @@ func Run(dburl string, migrations fs.FS, opts Options) error {
 	db := pg.Connect(dbopts)
 
 	e := &Engine{
-		db:  db,
-		dir: opts.Dir,
-		fs:  migrations,
+		db:     db,
+		dir:    opts.Dir,
+		dryrun: opts.DryRun,
+		fs:     migrations,
 	}
 
 	if err := e.Initialize(); err != nil {

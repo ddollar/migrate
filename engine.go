@@ -2,6 +2,7 @@ package migrate
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io/fs"
 	"sort"
@@ -12,6 +13,7 @@ import (
 type Engine struct {
 	db         *pg.DB
 	dir        string
+	dryrun     bool
 	fs         fs.FS
 	migrations Migrations
 	state      State
@@ -52,6 +54,10 @@ func (e *Engine) Migrate(version string) error {
 
 		if _, err := tx.Exec(string(m.Body)); err != nil {
 			return err
+		}
+
+		if e.dryrun {
+			return errors.New("rolling back dry run")
 		}
 
 		return nil
