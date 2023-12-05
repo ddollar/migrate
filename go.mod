@@ -2,7 +2,12 @@ module github.com/ddollar/migrate
 
 go 1.18
 
-require github.com/go-pg/pg/v10 v10.11.1
+require (
+	github.com/go-pg/pg/v10 v10.11.1
+	github.com/uptrace/bun v1.1.16
+	github.com/uptrace/bun/dialect/pgdialect v1.1.16
+	github.com/uptrace/bun/driver/pgdriver v1.1.16
+)
 
 require (
 	github.com/go-pg/zerochecker v0.2.0 // indirect
