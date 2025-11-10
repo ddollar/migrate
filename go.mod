@@ -1,4 +1,4 @@
-module github.com/ddollar/migrate
+module go.ddollar.dev/migrate
 
 go 1.22.1
 
